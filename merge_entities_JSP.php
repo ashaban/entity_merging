@@ -280,7 +280,7 @@ class entityMatchLevenshtein extends entityMatch {
 			$lev = levenshtein(trim(strtolower($src_entity_name)), trim(strtolower($target_entity_name)));
 
       //if geo coordinates are the same then mark as duplicate;
-      if( $src_entity_lat and $src_entity_long and
+      if( $src_entity_lat!="" and $src_entity_long!="" and
           floatval($this->target_entity_lats["$target_entity_id"]) == floatval($src_entity_lat) and
           floatval($this->target_entity_longs["$target_entity_id"]) == floatval($src_entity_long)) {
             $lev = 0;
@@ -415,7 +415,7 @@ foreach ($src_entities as $entity_id) {
   }
 	$rankings = $entity_match->find_matching_entities($entity_id,$entity_name,$entity_lat,$entity_long);
 	echo "<tr><td>$count</td><td><input type='hidden' name=source[$entity_id] value=".$entity_id.">".$entity_name;
-  if($entity_lat or $entity_long)
+  if($entity_lat!="" or $entity_long!="")
   echo "<br>&nbsp;&nbsp;&nbsp;&nbsp;($entity_lat,$entity_long)";
   echo "</td>";
 	$count++;
@@ -424,7 +424,7 @@ foreach ($src_entities as $entity_id) {
 			echo "<td>";
 			foreach($rankings['dup'] as $values){
 			echo $values["name"];
-      if($values["latitude"] or $values["longitude"])
+      if($values["latitude"]!="" or $values["longitude"]!="")
       echo "<br>(".$values["latitude"].",".$values["longitude"].")";
       echo "</br>";
       }
@@ -441,7 +441,7 @@ foreach ($src_entities as $entity_id) {
    		echo "<font color='$colors[$match_index]'><label id=label$lev$entity_id onclick='show(`$lev$entity_id`,`$level_message`)'><b>+</b>Show The $level_message</label><br><div id='$lev$entity_id' style='display:none'>";
    		foreach($rankings_pull as $id=>$close) {
    			echo "<input type='radio' name='target[$entity_id]' value='$id'>".$close["name"];
-        if($close["latitude"] or $close["longitude"])
+        if($close["latitude"] !="" or $close["longitude"]!="")
         echo "<br>&nbsp;&nbsp;(".$close["latitude"].",".$close["longitude"].")";
         echo "<br>";
    		}
